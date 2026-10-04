@@ -1,121 +1,44 @@
-import os
-import serpapi
-import streamlit as st
-from dotenv import load_dotenv
+# 📚 StudyLens
 
-load_dotenv()
+StudyLens is a smart learning search engine that turns one learning query into an organized study pack.
 
-api_key = os.getenv("SERPAPI_KEY")
-client = serpapi.Client(api_key=api_key)
+## 🚀 Features
 
-st.set_page_config(
-    page_title="StudyLens",
-    page_icon="📚",
-    layout="wide"
-)
+- 📚 Learn — Find explanations and useful resources
+- 🎥 Watch — Find relevant YouTube videos
+- 💻 Practice — Find coding practice resources
+- ❓ Explore — Discover related topics
+- ⭐ Recommended Learning Path — Follow a simple learning order
 
-st.title("📚 StudyLens")
-st.subheader("Your smart learning companion")
-st.write("Search once. Learn, watch, practice, and explore in one place.")
+## 🛠️ Tech Stack
 
-query = st.text_input(
-    "🔎 What do you want to learn?",
-    placeholder="Example: Binary Search in C++"
-)
+- Python
+- Streamlit
+- SerpApi
+- python-dotenv
 
-if st.button("🚀 Build My Study Pack"):
+## 💡 How It Works
 
-    if not query:
-        st.warning("Please enter a topic first.")
+1. Enter a topic you want to learn.
+2. StudyLens searches the web using SerpApi.
+3. Results are organized into different learning sections.
+4. Students can learn, watch, practice, and explore from one place.
 
-    else:
-        # ⭐ LEARNING PATH
-        st.header("⭐ Recommended Learning Path")
+## 🎯 Example
 
-        col1, col2, col3, col4 = st.columns(4)
+Search:
 
-        with col1:
-            st.info("1️⃣ UNDERSTAND\n\nLearn the concept")
+`Binary Search in C++`
 
-        with col2:
-            st.success("2️⃣ WATCH\n\nSee it visually")
+StudyLens creates a structured learning pack with resources for understanding, watching, practicing, and exploring the topic.
 
-        with col3:
-            st.warning("3️⃣ PRACTICE\n\nSolve problems")
+## 🔐 Setup
 
-        with col4:
-            st.error("4️⃣ EXPLORE\n\nGo deeper")
+Create a `.env` file and add your SerpApi key:
 
-        # 📚 LEARN
-        st.header("📚 Learn")
+`SERPAPI_KEY=your_api_key_here`
 
-        learn_results = client.search({
-            "engine": "google",
-            "q": query
-        })
+Then run:
 
-        organic = learn_results.get("organic_results", [])
-
-        for result in organic[:5]:
-            title = result.get("title")
-            link = result.get("link")
-
-            if title and link:
-                st.markdown(f"🔗 **[{title}]({link})**")
-
-        # 🎥 WATCH
-        st.header("🎥 Watch")
-
-        watch_results = client.search({
-            "engine": "youtube",
-            "search_query": query
-        })
-
-        videos = watch_results.get("video_results", [])
-
-        for video in videos[:5]:
-            title = video.get("title")
-            link = video.get("link")
-
-            if title and link:
-                st.markdown(f"▶️ **[{title}]({link})**")
-
-        # 💻 PRACTICE
-        st.header("💻 Practice")
-
-        practice_results = client.search({
-            "engine": "google",
-            "q": query + " coding practice problems"
-        })
-
-        practice = practice_results.get("organic_results", [])
-
-        for result in practice[:5]:
-            title = result.get("title")
-            link = result.get("link")
-
-            if title and link:
-                st.markdown(f"💻 **[{title}]({link})**")
-
-        # ❓ EXPLORE
-        st.header("❓ Explore Related Topics")
-
-        related_results = client.search({
-            "engine": "google",
-            "q": query + " related topics"
-        })
-
-        related = related_results.get("organic_results", [])
-
-        for result in related[:5]:
-            title = result.get("title")
-            link = result.get("link")
-
-            if title and link:
-                st.markdown(f"🔎 **[{title}]({link})**")
-
-        st.divider()
-
-        st.caption(
-            "StudyLens • Powered by SerpApi • Built for students"
-        )
+```bash
+python -m streamlit run app.py
